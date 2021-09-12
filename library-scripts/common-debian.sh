@@ -289,18 +289,17 @@ chmod +x /usr/local/bin/systemctl
 # Add RC snippet and custom bash prompt
 if [ "${RC_SNIPPET_ALREADY_ADDED}" != "true" ]; then
     echo "${rc_snippet}" >> /etc/bash.bashrc
-    echo "${codespaces_bash}" >> "${user_rc_path}/.bashrc"
-    echo 'export PROMPT_DIRTRIM=4' >> "${user_rc_path}/.bashrc"
-    if [ "${USERNAME}" != "root" ]; then
-        echo "${codespaces_bash}" >> "/root/.bashrc"
-        echo 'export PROMPT_DIRTRIM=4' >> "/root/.bashrc"
-    fi
+    # echo "eval \"\$(starship init bash)\"" >> "${user_rc_path}/.bashrc"
+    # if [ "${USERNAME}" != "root" ]; then
+        # echo "eval \"\$(starship init bash)\"" >> "/root/.bashrc"
+    # fi
     chown ${USERNAME}:${USERNAME} "${user_rc_path}/.bashrc"
     RC_SNIPPET_ALREADY_ADDED="true"
 fi
 
 # Move .config to user home directory
-mv /tmp/.config  /home/${USERNAME}
+cp -r /tmp/.config  /home/${USERNAME}
+mv /tmp/.config /root
 
 # Persist image metadata info, script if meta.env found in same directory
 meta_info_script="$(cat << 'EOF'
@@ -346,6 +345,6 @@ echo -e "\
     PACKAGES_ALREADY_INSTALLED=${PACKAGES_ALREADY_INSTALLED}\n\
     LOCALE_ALREADY_SET=${LOCALE_ALREADY_SET}\n\
     EXISTING_NON_ROOT_USER=${EXISTING_NON_ROOT_USER}\n\
-    RC_SNIPPET_ALREADY_ADDED=${RC_SNIPPET_ALREADY_ADDED}\n"
+    RC_SNIPPET_ALREADY_ADDED=${RC_SNIPPET_ALREADY_ADDED}" > "${MARKER_FILE}"
 
 echo "Done!"
