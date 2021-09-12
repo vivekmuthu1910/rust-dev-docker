@@ -1,0 +1,16 @@
+prompt = "starship prompt"
+startup = [
+	"alias docker-images = (docker images | lines | skip 1 | parse -r '(?P<REPOSITORY>[^\\s]+)\\s+(?P<TAG>[^\\s]+)\\s+(?P<ID>[^\\s]+)\\s+(?P<CREATED>\\d+ \\w+) ago\\s+(?P<SIZE>[^\\s]+)')",
+	"alias els = exa --color=always --group-directories-first --icons",
+	"alias ell = exa -l --color=always --group-directories-first --icons",
+	"alias ela = exa -a --color=always --group-directories-first --icons",
+	"alias ella = exa -la --color=always --group-directories-first --icons",
+	"alias el. = (exa -a | rg '^\\.')",
+	"alias cat = bat",
+]
+
+[line_editor]
+edit_mode = "vi"
+
+[env]
+MANPAGER = "sh -c 'col -bx | bat -l man -p'"
